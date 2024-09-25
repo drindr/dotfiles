@@ -1,0 +1,199 @@
+// -*- mode: jsonc -*-
+[
+    {
+        "position": "top",
+        "height": 20,
+        "spacing": 3,
+        "modules-left": [
+            "hyprland/workspaces"
+        ],
+        "modules-right": [
+            "tray",
+            "custom/power"
+        ],
+        // "mpd": {
+        //     "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+        //     "format-disconnected": "Disconnected ",
+        //     "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}  Stopped ",
+        //     "unknown-tag": "N/A",
+        //     "interval": 5,
+        //     "consume-icons": {
+        //         "on": " "
+        //     },
+        //     "random-icons": {
+        //         "off": "<span color=\"#f53c3c\"></span> ",
+        //         "on": " "
+        //     },
+        //     "repeat-icons": {
+        //         "on": " "
+        //     },
+        //     "single-icons": {
+        //         "on": "1 "
+        //     },
+        //     "state-icons": {
+        //         "paused": "",
+        //         "playing": ""
+        //     },
+        //     "tooltip-format": "MPD (connected)",
+        //     "tooltip-format-disconnected": "MPD (disconnected)"
+        // },
+        "tray": {
+            // "icon-size": 21,
+            "spacing": 10
+        },
+        "custom/power": {
+            "format" : "⏻ ",
+            "tooltip": false,
+            "menu": "on-click",
+            "menu-file": "/home/drin/.config/waybar/power_menu.xml", // Menu file in resources folder
+            "menu-actions": {
+                "logout": "hyprctl dispatch exit",
+                "shutdown": "poweroff",
+                "reboot": "reboot",
+                "suspend": "systemctl suspend",
+                "hibernate": "systemctl hibernate"
+            }
+        }
+    },
+    {
+        // "layer": "top", // Waybar at top layer
+        "position": "bottom", // Waybar position (top|bottom|left|right)
+        "height": 14, // Waybar height (to be removed for auto height)
+        // "width": 1280, // Waybar width
+        "spacing": 3, // Gaps between modules (4px)
+        // Choose the order of the modules
+        "modules-left": [
+            "hyprland/window"
+        ],
+        "modules-right": [
+            "network",
+            "hyprland/submap",
+            "pulseaudio",
+            "bluetooth",
+            "keyboard-state",
+            "battery",
+            "backlight",
+            "cpu",
+            "custom/discrete-gpu",
+            "memory",
+            "temperature",
+            "clock",
+            "power-profiles-daemon",
+            "idle_inhibitor",
+        ],
+        "keyboard-state": {
+            "numlock": true,
+            "capslock": true,
+            "format": {
+                "numlock": "N: {icon}",
+                "capslock": "C: {icon}"
+            },
+            "format-icons": {
+                "locked": "L",
+                "unlocked": "F"
+            }
+        },
+        "hyprland/submap": {
+            "format": "<span style=\"italic\">{}</span>"
+        },
+        "bluetooth": {
+            "format": "BLE: {status}",
+            "format-disabled": "", // an empty format will hide the module
+            "format-connected": "BLE: {num_connections} DEV(s)",
+            "tooltip-format": "{controller_alias}\t{controller_address}",
+            "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+            "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+            "on-click": "blueman-manager"
+        },
+        "idle_inhibitor": {
+            "format": "{icon}",
+            "format-icons": {
+                "activated": "",
+                "deactivated": ""
+            }
+        },
+        "clock": {
+            // "timezone": "America/New_York",
+            "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+            "format": "{:%Y/%m/%d-%H:%M}"
+        },
+        "cpu": {
+            "format": "CPU: {usage}% {avg_frequency}GHz",
+            "tooltip": false
+        },
+        "custom/discrete-gpu": {
+            "exec": "nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits",
+            "interval": 10,
+            "format": "NV: {}Mib"
+        },
+        "memory": {
+            "format": "MEM: {used}G"
+        },
+        "temperature": {
+            "thermal-zone": 0,
+            "critical-threshold": 80,
+            // "format-critical": "{temperatureC}°C {icon}",
+            "format": "TEMP: {temperatureC}°C",
+        },
+        "backlight": {
+            // "device": "acpi_video1",
+            "format": "LIGHT: {percent}%",
+            // jformat-icons": ["", "", "", "", "", "", "", "", ""]
+        },
+        "battery": {
+            "states": {
+                // "good": 95,
+                "warning": 30,
+                "critical": 15
+            },
+            "format": "BAT: {capacity}%",
+            "format-full": "BAT: FULL",
+            "format-charging": "BAT: {capacity}%",
+            "format-plugged": "BAT: {capacity}%",
+            // "format-alt": "{time} {icon}",
+            // "format-good": "", // An empty format will hide the module
+            // "format-full": "",
+            "format-icons": ["", "", "", "", ""]
+        },
+        "power-profiles-daemon": {
+          "format": "PERF: {icon}",
+          "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+          "tooltip": true,
+          "format-icons": {
+            "default": "PERF",
+            "performance": "PERF",
+            "balanced": "MID",
+            "power-saver": "SAVE"
+          }
+        },
+        "network": {
+            // "interface": "wlp2*", // (Optional) To force the use of this interface
+            "interval": 1,
+            "format-wifi": "WIFI: {essid}({signalStrength}%) UP: {bandwidthUpBits} DOWN: {bandwidthDownBits}",
+            "format-ethernet": "ETH UP: {bandwidthUpBits} DOWN: {bandwidthDownBits}",
+            "tooltip-format": "{ifname} via {gwaddr}",
+            "format-linked": "{ifname} (No IP)",
+            "format-disconnected": "Disconnected",
+            "format-alt": "{ifname}: {ipaddr}/{cidr}"
+        },
+        "pulseaudio": {
+            // "scroll-step": 1, // %, can be a float
+            "format": "{icon}: {volume}% {format_source}",
+            "format-bluetooth": "{icon}(BLE): {volume}% {format_source}",
+            "format-bluetooth-muted": " {icon} {format_source}",
+            "format-muted": "Muted {format_source}",
+            "format-source": "MIC: {volume}%",
+            "format-source-muted": "MIC: Muted",
+            "format-icons": {
+                "headphone": "VOL(headphone)",
+                "hands-free": "VOL(hands free)",
+                "headset": "VOL(headset)",
+                "phone": "VOL(phone)",
+                "portable": "VOL(port)",
+                "car": "car",
+                "default": "VOL"
+            },
+            "on-click": "pavucontrol"
+        }
+    }
+]
